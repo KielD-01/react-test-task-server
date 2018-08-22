@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "dependencies": {
     "firebase": "^5.4.0"
+  },
+  "scripts": {
+    "deploy" : "npm i & firebase login & cd functions & npm i & cd ../ & firebase deploy"
   }
 }
