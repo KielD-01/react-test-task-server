@@ -36,7 +36,7 @@ server.get('/api/todo/:id', (request, response) => {
 
 /* Create a To-Do */
 server.post('/api/todo', (request, response) => {
-    const result = TodoLists.create(request.body.todo);
+    const result = TodoLists.create(request.body.todo, request.body.title);
     return response.send({result});
 });
 

@@ -1,23 +1,20 @@
 const _ = require('lodash');
 
+class PrimaryKeyGenerator {
+    _create_key(collection) {
+        return collection.push().key;
+    }
+}
+
 /**
  * To-Do Lists Class
  */
-class TodoLists {
+class TodoLists extends PrimaryKeyGenerator {
     constructor(FireBase) {
+        super();
         this.db = FireBase.database();
         this.collection_name = 'todo_lists';
-        this.collection = FireBase.database().ref(this.collection_name);
-    }
-
-    /**
-     * Creating Primary Key
-     *
-     * @returns {string}
-     * @private
-     */
-    _create_key() {
-        return this.collection.push().key;
+        this.collection = this.db.ref(this.collection_name);
     }
 
     /**
@@ -32,19 +29,18 @@ class TodoLists {
             this.db.ref(this.collection_name);
 
         if (key) {
-            promise.on('value', snapshot => {
+            promise.once('value').then(snapshot => {
                 data = snapshot.val();
             });
 
             return data;
         }
 
-        promise
-            .on('value', snapshot => {
-                _.map(snapshot.val(), (item, key) => {
-                    data[key] = item;
-                });
+        promise.once('value').then(snapshot => {
+            _.map(snapshot.val(), (item, key) => {
+                data[key] = item;
             });
+        });
 
         return data;
     }
@@ -57,7 +53,7 @@ class TodoLists {
      */
     create(todo_list, title = 'Untitled List') {
         let item = {};
-        const item_key = this._create_key();
+        const item_key = super._create_key(this.collection);
 
         item[`/${item_key}`] = {title};
 
@@ -84,7 +80,7 @@ class TodoLists {
      *
      * @param key
      * @param data
-     * @returns {Promise<any>}
+     * @returns {Promise<void>}
      */
     update(key, data) {
         return this.collection
@@ -96,7 +92,7 @@ class TodoLists {
      * Remove a record
      *
      * @param key
-     * @returns {Promise<any>}
+     * @returns {Promise<void>}
      */
     remove(key) {
         return this.collection
@@ -105,6 +101,35 @@ class TodoLists {
     }
 }
 
+class TodoListItems extends PrimaryKeyGenerator {
+    constructor(FireBase, TodoLostKey) {
+        super();
+        this.db = FireBase.database();
+        this.collection = this.db.ref('todo_lists')
+            .child(TodoLostKey)
+            .child('items');
+    }
+
+    create(text = 'Lorem Ipsum', completed = false) {
+        const todoItemKey = super._create_key(this.collection);
+
+        return this.update(todoItemKey, {text, completed});
+    }
+
+    update(key, data) {
+        return this.collection
+            .child(key)
+            .update(data);
+    }
+
+    delete(key) {
+        return this.collection
+            .child(key)
+            .remove();
+    }
+}
+
 module.exports = {
-    TodoLists
+    TodoLists,
+    TodoListItems
 };
