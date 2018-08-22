@@ -1,0 +1,11 @@
+{
+  "name": "firebase-proj",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "^4.16.3",
+    "firebase": "^5.4.0",
+    "lodash": "latest",
+    "project-configurator": "^1.0.4-a",
+    "body-parser": "latest"
+  }
+}
