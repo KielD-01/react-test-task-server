@@ -1,3 +1,5 @@
 /.idea
 node_modules
 configurator
+.firebaserc
+firebase.json
