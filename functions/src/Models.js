@@ -9,7 +9,7 @@ class PrimaryKeyGenerator {
 /**
  * To-Do Lists Class
  */
-class TodoLists extends PrimaryKeyGenerator {
+class TodoLists extends PrimaryKeyGenerator{
     constructor(FireBase) {
         super();
         this.db = FireBase.database();
@@ -29,14 +29,14 @@ class TodoLists extends PrimaryKeyGenerator {
             this.db.ref(this.collection_name);
 
         if (key) {
-            promise.once('value').then(snapshot => {
+            promise.on('value', snapshot => {
                 data = snapshot.val();
             });
 
             return data;
         }
 
-        promise.once('value').then(snapshot => {
+        promise.on('value', snapshot => {
             _.map(snapshot.val(), (item, key) => {
                 data[key] = item;
             });
