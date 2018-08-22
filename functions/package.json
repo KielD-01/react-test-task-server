@@ -9,13 +9,14 @@
     "logs": "firebase functions:log"
   },
   "dependencies": {
+    "lodash": "latest",
     "cors": "^2.8.4",
-    "firebase-admin": "~6.0.0",
-    "firebase-functions": "^2.0.3",
     "express": "^4.16.3",
     "firebase": "^5.4.0",
-    "lodash": "latest",
-    "body-parser": "latest"
+    "body-parser": "latest",
+    "firebase-admin": "~6.0.0",
+    "firebase-functions": "^2.0.3",
+    "project-configurator": "^1.0.4-a"
   },
   "engines": {
     "node": "8"
